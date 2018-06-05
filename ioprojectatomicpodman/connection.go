@@ -6,8 +6,8 @@ import (
 
 var PodmanConnection *varlink.Connection
 
-func NewPodmanConnection() (*varlink.Connection, error) {
-	conn, err := varlink.NewConnection("tcp:10.70.48.27:8443")
+func NewPodmanConnection(uri string) (*varlink.Connection, error) {
+	conn, err := varlink.NewConnection(uri)
 	if err != nil {
 		return nil, err
 	}
