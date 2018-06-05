@@ -1,5 +1,5 @@
 # gopodman
-Get specific file or directory from the a github repo without cloning.
+Podman varlink API consumer using go.
 
 How to Install/Get
 ------------------
@@ -30,6 +30,7 @@ How to Use
 ----------
 
 First make sure you have podman varlink api listening to respective port and port is allow from firewall
+
     $ podman varlink tcp::12345 --timeout=0
 
 Check if podman able to ping the remote API.
