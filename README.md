@@ -36,14 +36,23 @@ First make sure you have podman varlink api listening to respective port and por
 Check if podman able to ping the remote API.
 
     $ export PODMAN_VARLINK_URI="tcp:127.0.0.1:12345"
+
     $ ./out/gopodman ping
     OK
+
     $ ./out/gopodman podmanVersion
     0.6.1
+
     $ ./out/gopodman --version
     gopodman version 0.0.1
+
+    $ ./out/gopodman listImages
+    REPOSITORY                  TAG      IMAGEID                                                            CREATED       SIZE
+    docker.io/library/busybox   1.28.4   8c811b4aec35f259572d0f79207bc0678df4c736eeec50bc9fec37ed936a472a   2 weeks ago   1.36MB
+    docker.io/library/busybox   latest   8c811b4aec35f259572d0f79207bc0678df4c736eeec50bc9fec37ed936a472a   2 weeks ago   1.36MB
+
            
 How to build
 ------------
- 
+
     $ make build
