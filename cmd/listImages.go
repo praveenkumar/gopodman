@@ -5,24 +5,24 @@ import (
 	"os"
 	"strings"
 
-	"github.com/praveenkumar/gopodman/ioprojectatomicpodman"
-	"github.com/urfave/cli"
-	"github.com/projectatomic/libpod/cmd/podman/formats"
-	"time"
 	"github.com/docker/go-units"
+	"github.com/praveenkumar/gopodman/ioprojectatomicpodman"
+	"github.com/projectatomic/libpod/cmd/podman/formats"
+	"github.com/urfave/cli"
 	"reflect"
+	"time"
 )
 
 var (
-	listImagesDescription = "List images"
+	listImagesDescription = "List images in local storage"
 	ListImagesCommand     = cli.Command{
-		Name:        "listImages",
+		Name:        "images",
 		Usage:       listImagesDescription,
-		Description: `Information display here to make ensure podman is communicating`,
+		Description: "list images in local storage",
 		Action:      listImagesCmd,
 		ArgsUsage:   "",
 	}
-	format = "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.Created}}\t{{.Size}}\t"
+	imageformat = "table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.Created}}\t{{.Size}}\t"
 )
 
 type imagesTemplateParams struct {
@@ -43,17 +43,17 @@ func generateImagesOutput(images []ioprojectatomicpodman.ImageInList) error {
 	}
 	var out formats.Writer
 	imagesOutput := getImagesTemplateOutput(images)
-	out = formats.StdoutTemplateArray{Output: imagesToGeneric(imagesOutput), Template: format, Fields: imagesOutput[0].HeaderMap()}
+	out = formats.StdoutTemplateArray{Output: imagesToGeneric(imagesOutput), Template: imageformat, Fields: imagesOutput[0].headerMap()}
 
 	return formats.Writer(out).Out()
 }
 
 // imagesToGeneric creates an empty array of interfaces for output
 func imagesToGeneric(templParams []imagesTemplateParams) (genericParams []interface{}) {
-		for _, v := range templParams {
-			genericParams = append(genericParams, interface{}(v))
-		}
-		return
+	for _, v := range templParams {
+		genericParams = append(genericParams, interface{}(v))
+	}
+	return
 }
 
 // getImagesTemplateOutput returns the images information to be printed in human readable format
@@ -83,7 +83,7 @@ func getImagesTemplateOutput(images []ioprojectatomicpodman.ImageInList) (images
 
 // HeaderMap produces a generic map of "headers" based on a line
 // of output
-func (i *imagesTemplateParams) HeaderMap() map[string]string {
+func (i *imagesTemplateParams) headerMap() map[string]string {
 	v := reflect.Indirect(reflect.ValueOf(i))
 	values := make(map[string]string)
 

@@ -19,6 +19,7 @@ func main() {
 		cmd.PingCommand,
 		cmd.PodmanVersionCommand,
 		cmd.ListImagesCommand,
+		cmd.PsCommand,
 	}
 
 	app.Before = func(c *cli.Context) error {
