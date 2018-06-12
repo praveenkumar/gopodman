@@ -325,6 +325,12 @@ type BuildInfo struct {
 	Image_format  string            `json:"image_format"`
 }
 
+// BuildResponse is used to describe the responses for building images
+type BuildResponse struct {
+	Logs []string `json:"logs"`
+	Id   string   `json:"id"`
+}
+
 // Generated client method calls
 
 // Ping provides a response for developers to ensure their varlink setup is working.
@@ -1430,13 +1436,13 @@ func (m GetImage_methods) Send(c *varlink.Connection, flags uint64, name_in_ str
 }
 
 // BuildImage takes a [BuildInfo](#BuildInfo) structure and builds an image.  At a minimum, you must provide the
-// 'dockerfile' and 'tags' options in the BuildInfo structure.  Upon a successful build, it will
-// return the ID of the container.
+// 'dockerfile' and 'tags' options in the BuildInfo structure. It will return a [BuildResponse](#BuildResponse) structure
+// that contains the build logs and resulting image ID.
 type BuildImage_methods struct{}
 
 func BuildImage() BuildImage_methods { return BuildImage_methods{} }
 
-func (m BuildImage_methods) Call(c *varlink.Connection, build_in_ BuildInfo) (image_out_ []string, err_ error) {
+func (m BuildImage_methods) Call(c *varlink.Connection, build_in_ BuildInfo) (image_out_ BuildResponse, err_ error) {
 	receive, err_ := m.Send(c, 0, build_in_)
 	if err_ != nil {
 		return
@@ -1445,7 +1451,7 @@ func (m BuildImage_methods) Call(c *varlink.Connection, build_in_ BuildInfo) (im
 	return
 }
 
-func (m BuildImage_methods) Send(c *varlink.Connection, flags uint64, build_in_ BuildInfo) (func() ([]string, uint64, error), error) {
+func (m BuildImage_methods) Send(c *varlink.Connection, flags uint64, build_in_ BuildInfo) (func() (BuildResponse, uint64, error), error) {
 	var in struct {
 		Build BuildInfo `json:"build"`
 	}
@@ -1454,15 +1460,15 @@ func (m BuildImage_methods) Send(c *varlink.Connection, flags uint64, build_in_ 
 	if err != nil {
 		return nil, err
 	}
-	return func() (image_out_ []string, flags uint64, err error) {
+	return func() (image_out_ BuildResponse, flags uint64, err error) {
 		var out struct {
-			Image []string `json:"image"`
+			Image BuildResponse `json:"image"`
 		}
 		flags, err = receive(&out)
 		if err != nil {
 			return
 		}
-		image_out_ = []string(out.Image)
+		image_out_ = out.Image
 		return
 	}, nil
 }
@@ -2276,11 +2282,11 @@ func (c *VarlinkCall) ReplyGetImage(image_ ImageInList) error {
 	return c.Reply(&out)
 }
 
-func (c *VarlinkCall) ReplyBuildImage(image_ []string) error {
+func (c *VarlinkCall) ReplyBuildImage(image_ BuildResponse) error {
 	var out struct {
-		Image []string `json:"image"`
+		Image BuildResponse `json:"image"`
 	}
-	out.Image = []string(image_)
+	out.Image = image_
 	return c.Reply(&out)
 }
 
@@ -2643,8 +2649,8 @@ func (s *VarlinkInterface) GetImage(c VarlinkCall, name_ string) error {
 }
 
 // BuildImage takes a [BuildInfo](#BuildInfo) structure and builds an image.  At a minimum, you must provide the
-// 'dockerfile' and 'tags' options in the BuildInfo structure.  Upon a successful build, it will
-// return the ID of the container.
+// 'dockerfile' and 'tags' options in the BuildInfo structure. It will return a [BuildResponse](#BuildResponse) structure
+// that contains the build logs and resulting image ID.
 func (s *VarlinkInterface) BuildImage(c VarlinkCall, build_ BuildInfo) error {
 	return c.ReplyMethodNotImplemented("io.projectatomic.podman.BuildImage")
 }
@@ -3435,6 +3441,12 @@ type BuildInfo (
     image_format: string
 )
 
+# BuildResponse is used to describe the responses for building images
+type BuildResponse (
+    logs: []string,
+    id: string
+)
+
 # Ping provides a response for developers to ensure their varlink setup is working.
 # #### Example
 # ~~~
@@ -3640,9 +3652,9 @@ method ListImages() -> (images: []ImageInList)
 method GetImage(name: string) -> (image: ImageInList)
 
 # BuildImage takes a [BuildInfo](#BuildInfo) structure and builds an image.  At a minimum, you must provide the
-# 'dockerfile' and 'tags' options in the BuildInfo structure.  Upon a successful build, it will
-# return the ID of the container.
-method BuildImage(build: BuildInfo) -> (image: []string)
+# 'dockerfile' and 'tags' options in the BuildInfo structure. It will return a [BuildResponse](#BuildResponse) structure
+# that contains the build logs and resulting image ID.
+method BuildImage(build: BuildInfo) -> (image: BuildResponse)
 
 # This function is not implemented yet.
 method CreateImage() -> (notimplemented: NotImplemented)
