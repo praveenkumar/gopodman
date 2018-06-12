@@ -62,4 +62,4 @@ Check if podman able to ping the remote API.
 How to build
 ------------
 
-    $ make build
+    $ make

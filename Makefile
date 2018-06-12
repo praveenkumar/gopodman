@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := build
+
 # Go and compilation related variables
 BUILD_DIR ?= out
 
