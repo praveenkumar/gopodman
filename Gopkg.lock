@@ -22,8 +22,8 @@
 [[projects]]
   name = "github.com/projectatomic/libpod"
   packages = ["cmd/podman/formats"]
-  revision = "3e0ff127c2210cc54681a776e12d8f1d3ae66630"
-  version = "v0.6.1"
+  revision = "72c0b4f1e2a4a4ceb629e65837f2efe6496c387d"
+  version = "v0.6.2"
 
 [[projects]]
   name = "github.com/urfave/cli"
@@ -61,6 +61,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b3cffe56c2612aebbbe5160b904d5dccdaa5a88ae2bb39a238b71b49ea080b8b"
+  inputs-digest = "b1a1e0d6967b28a2dc17dc8ab433a1dc3818bd9a7e1b15c0f8aa661c058ae3c1"
   solver-name = "gps-cdcl"
   solver-version = 1

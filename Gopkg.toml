@@ -33,6 +33,11 @@
   branch = "master"
   name = "github.com/varlink/go"
 
+[[constraint]]
+  name = "github.com/projectatomic/libpod"
+  packages = ["cmd/podman/formats"]
+  version = "v0.6.2"
+
 [prune]
   go-tests = true
   unused-packages = true
