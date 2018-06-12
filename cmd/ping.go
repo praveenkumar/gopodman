@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/praveenkumar/gopodman/ioprojectatomicpodman"
 	"github.com/urfave/cli"
@@ -19,12 +18,12 @@ var (
 	}
 )
 
-func pingCmd(c *cli.Context) {
+func pingCmd(c *cli.Context) error {
 	pingMethod := ioprojectatomicpodman.Ping()
 	pingResponse, err := pingMethod.Call(ioprojectatomicpodman.PodmanConnection)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return err
 	}
 	fmt.Println(pingResponse.Message)
+	return nil
 }
