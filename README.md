@@ -1,6 +1,8 @@
 # gopodman
 Podman varlink API consumer using go.
 
+Works with go v>1.9 .
+
 How to Install/Get
 ------------------
 
